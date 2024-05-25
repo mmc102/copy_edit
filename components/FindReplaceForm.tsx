@@ -1,5 +1,4 @@
 "use client"
-
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -13,6 +12,7 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { GitUser } from '@/utils/git_helpers';
 
 const formSchema = z.object({
     find: z.string().min(2, {
@@ -23,7 +23,20 @@ const formSchema = z.object({
     }),
 })
 
-export default function FindReplaceForm() {
+interface FormValues {
+    find: string;
+    replace: string;
+}
+
+interface FindReplaceFormProps {
+    gitUser: GitUser | null;
+    onSubmit: (find: string, replace: string, gitUser: GitUser) => void;
+    allowSubmit: boolean;
+}
+
+export default function FindReplaceForm({ gitUser, onSubmit, allowSubmit }: FindReplaceFormProps) {
+    console.log("im rendering")
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -32,15 +45,17 @@ export default function FindReplaceForm() {
         },
     })
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
+    const handleSubmit = (values: FormValues) => {
+        if (gitUser) {
+            onSubmit(values.find, values.replace, gitUser);
+        }
+    };
 
-        console.log(values)
-    }
 
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
                 <FormField
                     control={form.control}
                     name="find"
@@ -70,7 +85,7 @@ export default function FindReplaceForm() {
                         </FormItem>
                     )}
                 />
-                <Button type="submit">Search</Button>
+                <Button disabled={!allowSubmit} type="submit">Search</Button>
             </form>
         </Form>
     )
