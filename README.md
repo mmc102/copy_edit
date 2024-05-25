@@ -1,10 +1,7 @@
 ## TODO
 
-make sure auth as a user works
+Edit git users
 
-improve the look of the card that shows which repo we are in
+make something happen when you click create new user
 
-add the ability to select between multiple repos
-
-add spinner to the find replace screen
-
+autofill the repos and users when you give it a token

@@ -1,6 +1,8 @@
 
 import { toast } from "sonner"
 import axios from 'axios';
+import { decryptToken } from "@/utils/encry_helpers";
+
 
 export type GitUser = {
     username: string;
@@ -30,7 +32,7 @@ const seconds = Date.now()
 async function createBlobs(gitUser: GitUser, changes: Change[]): Promise<Change[]> {
     const url = `https://api.github.com/repos/${gitUser.repo_owner}/${gitUser.repo_name}/git/blobs`;
     const headers = {
-        'Authorization': `token ${gitUser.token}`,
+        'Authorization': `token ${decryptToken(gitUser.token)}`,
         'Accept': 'application/vnd.github.v3+json'
     };
 
@@ -64,7 +66,7 @@ async function createBlobs(gitUser: GitUser, changes: Change[]): Promise<Change[
 async function getTreeSha(gitUser: GitUser, commitSha: string): Promise<string | null> {
     const url = `https://api.github.com/repos/${gitUser.repo_owner}/${gitUser.repo_name}/git/commits/${commitSha}`;
     const headers = {
-        'Authorization': `token ${gitUser.token}`,
+        'Authorization': `token ${decryptToken(gitUser.token)}`,
         'Accept': 'application/vnd.github.v3+json'
     };
 
@@ -92,7 +94,7 @@ export async function codeSearch(gitUser: GitUser, find: string): Promise<GrepRe
     const query = `${find} repo:${gitUser.repo_owner}/${gitUser.repo_name}`;
     const url = `https://api.github.com/search/code?q=${query}`;
     const headers = {
-        'Authorization': `token ${gitUser.token}`,
+        'Authorization': `token ${decryptToken(gitUser.token)}`,
         'Accept': 'application/vnd.github.v3+json',
         'X-GitHub-Api-Version': '2022-11-28'
     };
@@ -137,7 +139,7 @@ export async function codeSearch(gitUser: GitUser, find: string): Promise<GrepRe
 async function fetchFileContentFromGithub(gitUser: GitUser, filepath: string): Promise<string> {
     const url = `https://api.github.com/repos/${gitUser.repo_owner}/${gitUser.repo_name}/contents/${filepath}`;
     const headers = {
-        'Authorization': `token ${gitUser.token}`,
+        'Authorization': `token ${decryptToken(gitUser.token)}`,
         'Accept': 'application/vnd.github.v3+json'
     };
 
@@ -163,7 +165,7 @@ async function fetchFileContentFromGithub(gitUser: GitUser, filepath: string): P
 async function createTree(gitUser: GitUser, baseTreeSha: string, changes: Change[]): Promise<string | null> {
     const url = `https://api.github.com/repos/${gitUser.repo_owner}/${gitUser.repo_name}/git/trees`;
     const headers = {
-        'Authorization': `token ${gitUser.token}`,
+        'Authorization': `token ${decryptToken(gitUser.token)}`,
         'Accept': 'application/vnd.github.v3+json'
     };
 
@@ -227,7 +229,7 @@ async function createCommit(gitUser: GitUser, changes: Change[]): Promise<boolea
 
     const url = `https://api.github.com/repos/${gitUser.repo_owner}/${gitUser.repo_name}/git/commits`;
     const headers = {
-        'Authorization': `token ${gitUser.token}`,
+        'Authorization': `token ${decryptToken(gitUser.token)}`,
         'Accept': 'application/vnd.github.v3+json'
     };
     const payload = {
@@ -260,7 +262,7 @@ async function createCommit(gitUser: GitUser, changes: Change[]): Promise<boolea
 async function updateRef(gitUser: GitUser, commitSha: string): Promise<void> {
     const url = `https://api.github.com/repos/${gitUser.repo_owner}/${gitUser.repo_name}/git/refs/heads/${createBranchName(gitUser)}`;
     const headers = {
-        'Authorization': `token ${gitUser.token}`,
+        'Authorization': `token ${decryptToken(gitUser.token)}`,
         'Accept': 'application/vnd.github.v3+json'
     };
     const payload = {
@@ -287,7 +289,7 @@ async function updateRef(gitUser: GitUser, commitSha: string): Promise<void> {
 async function getLatestCommitSha(gitUser: GitUser): Promise<string | null> {
     const url = `https://api.github.com/repos/${gitUser.repo_owner}/${gitUser.repo_name}/git/refs/heads/${gitUser.base_branch}`;
     const headers = {
-        'Authorization': `token ${gitUser.token}`,
+        'Authorization': `token ${decryptToken(gitUser.token)}`,
         'Accept': 'application/vnd.github.v3+json'
     };
 
@@ -320,7 +322,7 @@ async function createBranch(gitUser: GitUser): Promise<boolean> {
 
     const url = `https://api.github.com/repos/${gitUser.repo_owner}/${gitUser.repo_name}/git/refs`;
     const headers = {
-        'Authorization': `token ${gitUser.token}`,
+        'Authorization': `token ${decryptToken(gitUser.token)}`,
         'Accept': 'application/vnd.github.v3+json'
     };
     const payload = {
@@ -350,7 +352,7 @@ async function createBranch(gitUser: GitUser): Promise<boolean> {
 async function branchExists(gitUser: GitUser, branchName: string): Promise<boolean> {
     const url = `https://api.github.com/repos/${gitUser.repo_owner}/${gitUser.repo_name}/branches/${branchName}`;
     const headers = {
-        'Authorization': `token ${gitUser.token}`,
+        'Authorization': `token ${decryptToken(gitUser.token)}`,
         'Accept': 'application/vnd.github.v3+json'
     };
 
@@ -380,7 +382,7 @@ async function createPullRequest(gitUser: GitUser): Promise<string | null> {
 
     const url = `https://api.github.com/repos/${gitUser.repo_owner}/${gitUser.repo_name}/pulls`;
     const headers = {
-        'Authorization': `token ${gitUser.token}`,
+        'Authorization': `token ${decryptToken(gitUser.token)}`,
         'Accept': 'application/vnd.github.v3+json'
     };
     const payload = {

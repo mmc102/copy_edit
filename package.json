@@ -19,6 +19,8 @@
     "autoprefixer": "10.4.17",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "crypto-js": "^4.2.0",
+    "dotenv": "^16.4.5",
     "geist": "^1.2.1",
     "lucide-react": "^0.379.0",
     "next": "latest",

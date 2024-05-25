@@ -1,6 +1,7 @@
 "use client"
 
 import { createClient } from "@/utils/supabase/client";
+import { encryptToken } from "@/utils/encry_helpers";
 import { redirect } from "next/navigation";
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -85,7 +86,7 @@ export default function GitSetupForm() {
                 {
                     repo_name: values.repo_name,
                     repo_owner: values.repo_owner,
-                    token: values.token,
+                    token: encryptToken(values.token),
                     base_branch: values.base_branch,
                     user_id: user.id,
                 },
