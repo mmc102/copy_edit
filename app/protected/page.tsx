@@ -1,5 +1,6 @@
 'use client'
 
+import { toast } from "sonner"
 import { useState } from 'react';
 import { SelectSearchResultsTable } from '@/components/SelectSearchResultsForm';
 import FindReplaceForm from '@/components/FindReplaceForm';
@@ -25,8 +26,8 @@ export default function ProtectedPage({ gitUsers }: { gitUsers: GitUser[] }) {
             const results: GrepResult[] = await codeSearch(gitUser, find);
             setSearchResults(results);
         }
-        catch {
-            console.log("caught")
+        catch (error) {
+            toast(error as string)
         }
     };
 
