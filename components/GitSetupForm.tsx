@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/popover"
 import { Input } from "@/components/ui/input"
 import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
+import { toast } from "sonner";
 
 
 
@@ -39,7 +40,7 @@ const formSchema = z.object({
     }),
 })
 
-export default function GitSetupForm() {
+export default function GitSetupForm({ setGitUser }: any) {
 
 
     const DEFAULT_VALUES = {
@@ -93,9 +94,9 @@ export default function GitSetupForm() {
             ]);
 
         if (error) {
-            console.error('Error inserting data:', error);
+            toast('Error smashing data to supabase');
         } else {
-            console.log('Data inserted successfully:', data);
+            setGitUser(data)
         }
     }
 

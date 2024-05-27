@@ -2,6 +2,6 @@
 
 Edit git users
 
-make something happen when you click create new user
+figure out why both dev and prod builds hang
 
 autofill the repos and users when you give it a token
